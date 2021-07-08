@@ -8,12 +8,10 @@ const bodyEl = document.getElementById('body');
 const checkBoxToggle = document.getElementById("theme-switch-toggle");
 const Theme = { LIGHT: 'light-theme', DARK: 'dark-theme', };
 
-const theme = localStorage.getItem('theme');
+const theme = localStorage.getItem('theme') || Theme.LIGHT;
+bodyEl.classList.add(theme);
+checkBoxToggle.checked = theme === Theme.DARK;
 
-bodyEl.setAttribute('class', theme);
-  if (theme === Theme.DARK) {
-    checkBoxToggle.setAttribute('checked', true);
-  };
 
 const productMarkup = createProductCardMarkup(products);
 
@@ -24,15 +22,20 @@ function createProductCardMarkup(products) {
 productList.insertAdjacentHTML("beforeend", productMarkup);
 
 function changeTheme() {
+  const a = Theme.DARK;
+  const b = Theme.LIGHT;
   if (checkBoxToggle.checked) {
-    bodyEl.classList.add(Theme.DARK);
-    bodyEl.classList.remove(Theme.LIGHT);
-    localStorage.setItem('theme', Theme.DARK);
+      themeToggle(a, b)
     } else {
-      bodyEl.classList.add(Theme.LIGHT);
-      bodyEl.classList.remove(Theme.DARK);
-      localStorage.setItem('theme', Theme.LIGHT);
+      themeToggle(b, a)
     };
 };
 
+function themeToggle(a, b) {
+    bodyEl.classList.add(a);
+    bodyEl.classList.remove(b);
+    localStorage.setItem('theme', a);
+};
+
 checkBoxToggle.addEventListener('change', changeTheme)
+
